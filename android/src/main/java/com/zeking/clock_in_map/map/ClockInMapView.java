@@ -312,7 +312,7 @@ public class ClockInMapView implements PlatformView, LocationSource, AMapLocatio
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(latLng);
         markerOption.draggable(false);//设置Marker可拖动
-        markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.project_img_setting_position));
+        markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.project_img_tag_position));
         clockInPointMarker = aMap.addMarker(markerOption);
     }
 }

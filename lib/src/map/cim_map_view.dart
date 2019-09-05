@@ -15,8 +15,7 @@ class CIMMapView extends StatefulWidget {
       {Key key,
       this.onCenterPoint,
       this.clockInLatitude,
-      this.clockInLongitude
-      })
+      this.clockInLongitude})
       : super(key: key);
 
   @override
@@ -32,15 +31,18 @@ class _CIMMapViewState extends State<CIMMapView> {
     if (call.method == "map#getCenterPoint") {
       Map args = call.arguments;
       String centerPointJson = args["centerPointJson"];
-
       LocationModel locationModel =
           LocationModel.fromJson(json.decode(centerPointJson));
-//      print('centerPointJson:$centerPointJson');
-//      print('centerPointJson City:${locationModel.city}');
       widget.onCenterPoint(locationModel);
     }
 
     return new Future.value("");
+  }
+
+  _onPlatformViewCreated(id){
+    print('onPlatformViewCreated:$id');
+    methodChannel = MethodChannel('cim/map_center');
+    methodChannel.setMethodCallHandler(handleMethod);
   }
 
   @override
@@ -48,24 +50,21 @@ class _CIMMapViewState extends State<CIMMapView> {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
         viewType: "cim/mapview",
-        onPlatformViewCreated: (id) {
-          print('onPlatformViewCreated:$id');
-          methodChannel = MethodChannel('cim/map_center');
-          methodChannel.setMethodCallHandler(handleMethod);
-        },
+        onPlatformViewCreated: _onPlatformViewCreated,
         creationParams: _CreationParams.fromWidget(widget).toMap(),
         creationParamsCodec: const StandardMessageCodec(),
       );
-    }
-
-//    else if (defaultTargetPlatform == TargetPlatform.iOS) {
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
 //      return UiKitView(
 //        viewType: "cim/mapview",
 //        onPlatformViewCreated: _onPlatformViewCreated,
 //        creationParams: _CreationParams.fromWidget(widget).toMap(),
 //        creationParamsCodec: const StandardMessageCodec(),
 //      );
-//    }
+      return Text('IOS 暂未支持');
+    }
+
+    return Text('该平台暂未支持');
   }
 }
 

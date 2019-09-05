@@ -1,36 +1,10 @@
 # clock_in_map
 
 #### Description
-Flutter 谷歌地图打卡 demo
-
-#### Software Architecture
-Software architecture description
-
-#### Installation
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### Instructions
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### Contribution
-
-1. Fork the repository
-2. Create Feat_xxx branch
-3. Commit your code
-4. Create Pull Request
+Flutter 高德地图打卡 demo
 
 
-#### Gitee Feature
+Demo plug-in of autonavi map clocking (support single positioning, multiple positioning, calculate the distance between two points, call back the map center point information, move to the designated point, and display the clocking location)
 
-1. You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2. Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3. Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4. The most valuable open source project [GVP](https://gitee.com/gvp)
-5. The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6. The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+
+Currently only supported on Android
