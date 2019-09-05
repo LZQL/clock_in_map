@@ -1,0 +1,28 @@
+PODS:
+  - clock_in_map (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - permission_handler (3.2.2):
+    - Flutter
+
+DEPENDENCIES:
+  - clock_in_map (from `.symlinks/plugins/clock_in_map/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+
+EXTERNAL SOURCES:
+  clock_in_map:
+    :path: ".symlinks/plugins/clock_in_map/ios"
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+
+SPEC CHECKSUMS:
+  clock_in_map: 0311dda6353b78b05b3dbee4d3b92694adde86f7
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  permission_handler: d59f41439f5bc6c4d1005f3355e98f05ddc68ece
+
+PODFILE CHECKSUM: 7fb83752f59ead6285236625b82473f90b1cb932
+
+COCOAPODS: 1.6.1
