@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:clock_in_map/clock_in_map.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,7 +18,7 @@ import 'image_button.dart';
 import 'search_page.dart';
 import 'toast_util.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
   if (Platform.isAndroid) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -61,8 +62,6 @@ class _MainRouteState extends State<MainRoute> {
   void initState() {
     super.initState();
 
-
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getPermission();
     });
@@ -74,7 +73,6 @@ class _MainRouteState extends State<MainRoute> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
@@ -296,28 +294,29 @@ class _MainRouteState extends State<MainRoute> {
   }
 
   // 跳转到 实时计算 我的位置 和 上一个页面使用此位置所保存的地址 之间的距离 页面
-  void goCalculateMyLocationUseThisLocationDistancePage(){
-    NavigagatorUtil.pushPage(context, CalculateMyLocationUseThisLocationDistancePage());
+  void goCalculateMyLocationUseThisLocationDistancePage() {
+    NavigagatorUtil.pushPage(
+        context, CalculateMyLocationUseThisLocationDistancePage());
   }
 
   // 跳转到 搜索 页面
-  void goSearchPage() async{
+  void goSearchPage() async {
     LatLng latLng = await NavigagatorUtil.pushPageResult(context, SearchPage());
 
-    if(latLng != null){
+    if (latLng != null) {
       CIMMap.moveCameraToPoint(latLng);
     }
   }
 
   // 使用此位置按钮
   void usetThisLocaiton() async {
-    if(isLoadAddresss){
+    if (isLoadAddresss) {
       ToastUtil.showShort('请稍后，正在加载地址信息', context);
-    }else{
+    } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setDouble('centerPointLatitude', centerPointLatitude);
       await prefs.setDouble('centerPointLongitude', centerPointLongitude);
-      drawClockInPoint(centerPointLatitude,centerPointLongitude);
+      drawClockInPoint(centerPointLatitude, centerPointLongitude);
     }
   }
 
@@ -332,52 +331,82 @@ class _MainRouteState extends State<MainRoute> {
 
   // 请求权限
   void getPermission() async {
-    PermissionStatus permission_location = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.location);
-    PermissionStatus permission_photos =
-        await PermissionHandler().checkPermissionStatus(PermissionGroup.phone);
-    PermissionStatus permission_storage = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      PermissionStatus permission_location = await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.location);
+      PermissionStatus permission_photos = await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.phone);
+      PermissionStatus permission_storage = await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.storage);
 
-    if (permission_location != PermissionStatus.granted ||
-        permission_photos != PermissionStatus.granted ||
-        permission_storage != PermissionStatus.granted) {
-      List<PermissionGroup> permissions = <PermissionGroup>[
-        PermissionGroup.location,
-        PermissionGroup.phone,
-        PermissionGroup.storage
-      ];
-      Map<PermissionGroup, PermissionStatus> permissionRequestResult =
-          await PermissionHandler().requestPermissions(permissions);
+      if (permission_location != PermissionStatus.granted ||
+          permission_photos != PermissionStatus.granted ||
+          permission_storage != PermissionStatus.granted) {
+        List<PermissionGroup> permissions = <PermissionGroup>[
+          PermissionGroup.location,
+          PermissionGroup.phone,
+          PermissionGroup.storage
+        ];
+        Map<PermissionGroup, PermissionStatus> permissionRequestResult =
+            await PermissionHandler().requestPermissions(permissions);
 
-      PermissionStatus locationStatus =
-          permissionRequestResult[PermissionGroup.location];
-      PermissionStatus phoneStatus =
-          permissionRequestResult[PermissionGroup.phone];
-      PermissionStatus storageStatus =
-          permissionRequestResult[PermissionGroup.storage];
+        PermissionStatus locationStatus =
+            permissionRequestResult[PermissionGroup.location];
+        PermissionStatus phoneStatus =
+            permissionRequestResult[PermissionGroup.phone];
+        PermissionStatus storageStatus =
+            permissionRequestResult[PermissionGroup.storage];
 
-      if (locationStatus == PermissionStatus.granted &&
-          phoneStatus == PermissionStatus.granted &&
-          storageStatus == PermissionStatus.granted) {
-        print('请求权限成功');
+        if (locationStatus == PermissionStatus.granted &&
+            phoneStatus == PermissionStatus.granted &&
+            storageStatus == PermissionStatus.granted) {
+          print('请求权限成功');
+          setState(() {
+            hasPermission = true;
+          });
+        } else {
+          print('请求权限失败');
+          setState(() {
+            hasPermission = false;
+          });
+        }
+      } else {
         setState(() {
           hasPermission = true;
         });
+      }
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      PermissionStatus permission_location = await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.location);
+
+      if (permission_location != PermissionStatus.granted) {
+        List<PermissionGroup> permissions = <PermissionGroup>[
+          PermissionGroup.location,
+        ];
+        Map<PermissionGroup, PermissionStatus> permissionRequestResult =
+            await PermissionHandler().requestPermissions(permissions);
+
+        PermissionStatus locationStatus =
+            permissionRequestResult[PermissionGroup.location];
+
+        if (locationStatus == PermissionStatus.granted) {
+          print('请求权限成功');
+          setState(() {
+            hasPermission = true;
+          });
+        } else {
+          print('请求权限失败');
+          setState(() {
+            hasPermission = false;
+          });
+        }
       } else {
-        print('请求权限失败');
         setState(() {
-          hasPermission = false;
+          hasPermission = true;
         });
       }
-    } else {
-      setState(() {
-        hasPermission = true;
-      });
-
     }
   }
-
 
   // 初始化 打卡位置 图标
   void initClockInPoint() async {
@@ -388,17 +417,17 @@ class _MainRouteState extends State<MainRoute> {
   }
 
   // 画 打卡地点 标记
-  void drawClockInPoint(centerPointLatitude,centerPointLongitude){
-    CIMMap.drawClockInPoint(new LatLng(centerPointLatitude, centerPointLongitude));
+  void drawClockInPoint(centerPointLatitude, centerPointLongitude) {
+    CIMMap.drawClockInPoint(
+        new LatLng(centerPointLatitude, centerPointLongitude));
   }
 
   // 更新中心点 widget 的位置信息 回调
   void onCenterPoint(LocationModel centerPoint) {
-    if(centerPoint.address == null){
-
+    if (centerPoint.address == null) {
       isLoadAddresss = true;
       return;
-    }else{
+    } else {
       isLoadAddresss = false;
 
       address = centerPoint.address;
@@ -407,7 +436,5 @@ class _MainRouteState extends State<MainRoute> {
       print('center:  $centerPointLatitude,$centerPointLongitude');
       setState(() {});
     }
-
-
   }
 }

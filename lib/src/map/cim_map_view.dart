@@ -39,7 +39,7 @@ class _CIMMapViewState extends State<CIMMapView> {
     return new Future.value("");
   }
 
-  _onPlatformViewCreated(id){
+  _onPlatformViewCreated(id) {
     print('onPlatformViewCreated:$id');
     methodChannel = MethodChannel('cim/map_center');
     methodChannel.setMethodCallHandler(handleMethod);
@@ -61,10 +61,10 @@ class _CIMMapViewState extends State<CIMMapView> {
 //        creationParams: _CreationParams.fromWidget(widget).toMap(),
 //        creationParamsCodec: const StandardMessageCodec(),
 //      );
-      return Text('IOS 暂未支持');
+      return Container(alignment: Alignment.center, child: Text('IOS 暂未支持'));
     }
 
-    return Text('该平台暂未支持');
+    return Container(alignment: Alignment.center, child: Text('该平台暂未支持'));
   }
 }
 
