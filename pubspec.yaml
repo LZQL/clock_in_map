@@ -1,6 +1,6 @@
 name: clock_in_map
 description: 高德地图 打卡 Demo 插件（支持 单次定位，多次定位，计算两点之间距离，地图中心点 信息回调，移动到指定点，打卡地点 显示）
-version: 0.0.2
+version: 0.0.3
 author: Zeking Lee <396298154@qq.com>
 homepage: https://github.com/LZQL/clock_in_map
 

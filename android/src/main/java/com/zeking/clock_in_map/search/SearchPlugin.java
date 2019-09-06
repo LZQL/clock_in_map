@@ -58,11 +58,14 @@ public class SearchPlugin implements MethodChannel.MethodCallHandler, Inputtips.
         List<TipModel> tempList = new ArrayList<>();
 
         for (Tip tip : list) {
-            tempList.add(new TipModel(
-                    tip.getName(),
-                    tip.getAddress(),
-                    new LatLng(tip.getPoint().getLatitude(), tip.getPoint().getLongitude()),
-                    tip.getDistrict()));
+            if(tip.getPoint() !=null){
+                tempList.add(new TipModel(
+                        tip.getName(),
+                        tip.getAddress(),
+                        new LatLng(tip.getPoint().getLatitude(), tip.getPoint().getLongitude()),
+                        tip.getDistrict()));
+            }
+
         }
 
 
