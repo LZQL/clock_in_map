@@ -7,3 +7,9 @@ Flutter 高德地图打卡 demo
 
 
 目前只 支持 Android 端
+
+
+截图效果 请移步：
+[Flutter - 自定义插件 - 02 - clock_in_map (高德地图打卡)](https://juejin.im/post/5d785e976fb9a06aec26685a)
+
+https://juejin.im/post/5d785e976fb9a06aec26685a
